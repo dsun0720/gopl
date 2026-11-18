@@ -1,11 +1,12 @@
 <!--
 Sync Impact Report
-Version change: unratified scaffold -> 1.0.0 (initial adoption)
-Principles added: Learning Scope; Exercise Fidelity; Formatting and Tests
-Principles modified or removed: none
-Sections added: Project Scope; Review Evidence (replacing generic template slots)
-Sections removed: none; two unused principle slots omitted
-Follow-up TODOs: none
+Version change: none (1.0.0; completes the initial constitution)
+Principles added: Unit Tests
+Principle modified: Formatting and Tests -> Go Formatting
+Section updated: Review Evidence
+Sections added or removed: none
+Follow-up: Align the active echo feature's plan, tasks, and validation guide
+with the package-scoped test gate before resuming implementation.
 -->
 
 # gopl Constitution
@@ -22,10 +23,15 @@ Follow-up TODOs: none
 - **Rule:** Exercise solutions MUST satisfy the exercise's explicit constraints. Any departure MUST be labeled as a variant and MUST NOT be presented as the original solution.
 - **Reject if:** A PR uses a library function where the exercise explicitly requires implementing the algorithm by hand and presents it as the original solution.
 
-### III. Formatting and Tests
+### III. Go Formatting
 
-- **Rule:** All added or modified Go files MUST be formatted with `gofmt`, and `go test ./...` MUST pass from the repository root.
-- **Reject if:** A PR adds an exercise that causes any package to fail to compile under `go test ./...`.
+- **Rule:** All added or modified Go files MUST be formatted with `gofmt`.
+- **Reject if:** `gofmt -l` lists a Go file added or modified by the PR.
+
+### IV. Unit Tests
+
+- **Rule:** Every Go source file other than a `*_test.go` file MUST have unit tests covering its behavior, except files that define only `main` or only constants. Every unit test in each affected Go package MUST pass; unrelated packages are not part of this gate.
+- **Reject if:** A PR adds `ch1/echo/loops.go` without unit tests covering its loop behavior, or any unit test in `ch1/echo` fails.
 
 ## Project Scope
 
@@ -34,8 +40,10 @@ It is not a production framework.
 
 ## Review Evidence
 
-Review plans against the proposed changes and exercise constraints. For PRs, review the diff,
-check that `gofmt -l` lists none of the added or modified Go files, and check `go test ./...`.
+Review plans for exercise constraints and required unit tests. For PRs, check formatting
+and test coverage for changed Go source files, then run `go test` on each affected package
+(for example, `go test ./ch1/echo`). A package reporting `[no test files]` does not satisfy
+the unit-test requirement if it contains a non-exempt file that needs coverage.
 
 ## Governance
 
