@@ -12,6 +12,9 @@
 *.out
 coverage.*
 
+# Vendored modules
+vendor/
+
 # Go workspace
 go.work
 go.work.sum
